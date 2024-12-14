@@ -1,0 +1,208 @@
+<div>
+  <div>
+    <h1>
+      User #<%= @the_user.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/users">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_user/<%= @the_user.id %>">
+          Delete user
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Comments count
+      </dt>
+      <dd>
+        <%= @the_user.comments_count %>
+      </dd>
+
+      <dt>
+        Email
+      </dt>
+      <dd>
+        <%= @the_user.email %>
+      </dd>
+
+      <dt>
+        Encrypted password
+      </dt>
+      <dd>
+        <%= @the_user.encrypted_password %>
+      </dd>
+
+      <dt>
+        Likes count
+      </dt>
+      <dd>
+        <%= @the_user.likes_count %>
+      </dd>
+
+      <dt>
+        Private
+      </dt>
+      <dd>
+        <%= @the_user.private %>
+      </dd>
+
+      <dt>
+        Remember created at
+      </dt>
+      <dd>
+        <%= @the_user.remember_created_at %>
+      </dd>
+
+      <dt>
+        Reset password sent at
+      </dt>
+      <dd>
+        <%= @the_user.reset_password_sent_at %>
+      </dd>
+
+      <dt>
+        Reset password token
+      </dt>
+      <dd>
+        <%= @the_user.reset_password_token %>
+      </dd>
+
+      <dt>
+        Username
+      </dt>
+      <dd>
+        <%= @the_user.username %>
+      </dd>
+
+      <dt>
+        Own photos count
+      </dt>
+      <dd>
+        <%= @the_user.own_photos_count %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_user.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_user.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit user
+    </h2>
+
+    <form action="/modify_user/<%= @the_user.id %>"  method="post" >
+      <div>
+        <label for="comments_count_box">
+          Comments count
+        </label>
+
+        <input type="text" id="comments_count_box" name="query_comments_count" value="<%= @the_user.comments_count %>">
+      </div>
+
+      <div>
+        <label for="email_box">
+          Email
+        </label>
+
+        <input type="text" id="email_box" name="query_email" value="<%= @the_user.email %>">
+      </div>
+
+      <div>
+        <label for="encrypted_password_box">
+          Encrypted password
+        </label>
+
+        <input type="text" id="encrypted_password_box" name="query_encrypted_password" value="<%= @the_user.encrypted_password %>">
+      </div>
+
+      <div>
+        <label for="likes_count_box">
+          Likes count
+        </label>
+
+        <input type="text" id="likes_count_box" name="query_likes_count" value="<%= @the_user.likes_count %>">
+      </div>
+
+      <div>
+        <input type="checkbox" id="private_box" name="query_private" value="1" <%= "checked" if @the_user.private %>>
+
+        <label for="private_box">
+            Private
+        </label>
+      </div>
+
+      <div>
+        <label for="remember_created_at_box">
+          Remember created at
+        </label>
+
+        <input type="datetime-local" id="remember_created_at_box" name="query_remember_created_at"
+         value="<%= @the_user.remember_created_at %>">
+      </div>
+
+      <div>
+        <label for="reset_password_sent_at_box">
+          Reset password sent at
+        </label>
+
+        <input type="datetime-local" id="reset_password_sent_at_box" name="query_reset_password_sent_at"
+         value="<%= @the_user.reset_password_sent_at %>">
+      </div>
+
+      <div>
+        <label for="reset_password_token_box">
+          Reset password token
+        </label>
+
+        <input type="text" id="reset_password_token_box" name="query_reset_password_token" value="<%= @the_user.reset_password_token %>">
+      </div>
+
+      <div>
+        <label for="username_box">
+          Username
+        </label>
+
+        <input type="text" id="username_box" name="query_username" value="<%= @the_user.username %>">
+      </div>
+
+      <div>
+        <label for="own_photos_count_box">
+          Own photos count
+        </label>
+
+        <input type="text" id="own_photos_count_box" name="query_own_photos_count" value="<%= @the_user.own_photos_count %>">
+      </div>
+
+      <button>
+        Update user
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
