@@ -1,0 +1,107 @@
+<div>
+  <div>
+    <h1>
+      <%= @the_username3 %>
+    </h1>
+
+    <dl>
+      <dt>
+        Private
+      </dt>
+      <dd>
+        <%= @user3.private %>
+      </dd>
+
+
+      <dt>
+        Followers
+      </dt>
+      <dd>
+        <%= FollowRequest.where(recipient_id: @user3, status: "accepted").count %>
+      </dd>
+
+      <dt>
+        Following
+      </dt>
+      <dd>
+        <%= FollowRequest.where(sender_id: @user3, status: "accepted").count %>
+      </dd>
+
+
+      <ul>
+        <li><a href="/users/<%= @the_username3 %>">Profile</a></li>
+        <li><a href="/users/<%= @the_username3 %>/liked_photos">Liked photos</a></li>
+        <li><a href="/users/<%= @the_username3 %>/feed">Feed</a></li>
+        <li><a href="/users/<%= @the_username3 %>/discover">Discover</a></li>
+      </ul>
+
+    </dl>
+  </div>
+</div>
+
+<h2>Feed (<%= @list_of_photos3.count%>)</h2>
+
+
+<div>
+  <div>
+    <table border="1">
+      <tr>
+
+        <th>
+          Image
+        </th>
+
+        <th>
+          Owner
+        </th>
+
+        <th>
+        Caption
+        </th>
+
+        <th>
+        Posted
+        </th>
+
+        <th>
+        Likes
+        </th>
+
+        <th>
+        </th>
+
+      </tr>
+
+      <% @list_of_photos3.each do |a_post| %>
+      <tr>
+        <td>
+          <img src="<%= a_post.image %>" class="img-responsive">
+        </td>
+
+        <td>
+          <%= User.where(id: a_post.owner_id).at(0).username %>
+        </td>
+
+        <td>
+          <%= a_post.caption %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_post.created_at) %> ago
+        </td>
+
+        <td>
+          <%= a_post.likes_count %>
+        </td>
+
+        <td>
+          <a href="/photos/<%= a_post.id %>">
+            Show details
+          </a>
+        </td>
+
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

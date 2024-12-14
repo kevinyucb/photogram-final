@@ -25,7 +25,8 @@ class FollowRequestsController < ApplicationController
 
     if the_follow_request.valid?
       the_follow_request.save
-      redirect_to("/follow_requests", { :notice => "Follow request created successfully." })
+      recipient_username = User.find(the_follow_request.recipient_id).username
+      redirect_to("/users/#{recipient_username}", { :notice => "Follow request created successfully." })
     else
       redirect_to("/follow_requests", { :alert => the_follow_request.errors.full_messages.to_sentence })
     end
@@ -52,7 +53,8 @@ class FollowRequestsController < ApplicationController
     the_follow_request = FollowRequest.where({ :id => the_id }).at(0)
 
     the_follow_request.destroy
+    recipient_username = User.find(the_follow_request.recipient_id)
 
-    redirect_to("/follow_requests", { :notice => "Follow request deleted successfully."} )
+    redirect_to("/users/#{recipient_username.username}", { :notice => "Follow request deleted successfully."} )
   end
 end

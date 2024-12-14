@@ -1,72 +1,56 @@
 class UsersController < ApplicationController
+  skip_before_action(:authenticate_user!, { :only => [:index] })
   def index
     matching_users = User.all
-
-    @list_of_users = matching_users.order({ :created_at => :desc })
-
+    @list_of_users = matching_users.order({ :username => :asc })
     render({ :template => "users/index" })
   end
 
   def show
-    the_id = params.fetch("path_id")
+    @the_username = params.fetch("username")
 
-    matching_users = User.where({ :id => the_id })
+    @user = User.find_by(username: params[:username])
 
-    @the_user = matching_users.at(0)
+    @list_of_photos = Photo.where(owner_id: @user).order(updated_at: :desc)
 
     render({ :template => "users/show" })
   end
 
-  def create
-    the_user = User.new
-    the_user.comments_count = params.fetch("query_comments_count")
-    the_user.email = params.fetch("query_email")
-    the_user.encrypted_password = params.fetch("query_encrypted_password")
-    the_user.likes_count = params.fetch("query_likes_count")
-    the_user.private = params.fetch("query_private", false)
-    the_user.remember_created_at = params.fetch("query_remember_created_at")
-    the_user.reset_password_sent_at = params.fetch("query_reset_password_sent_at")
-    the_user.reset_password_token = params.fetch("query_reset_password_token")
-    the_user.username = params.fetch("query_username")
-    the_user.own_photos_count = params.fetch("query_own_photos_count")
+  def liked_photos
+    @the_username2 = params.fetch("username")
 
-    if the_user.valid?
-      the_user.save
-      redirect_to("/users", { :notice => "User created successfully." })
-    else
-      redirect_to("/users", { :alert => the_user.errors.full_messages.to_sentence })
-    end
+    @user2 = User.find_by(username: params[:username])
+
+    @list_of_photos_2 = Like.where(fan_id: @user2)
+
+    render({ :template => "users/liked_photos" })
   end
 
-  def update
-    the_id = params.fetch("path_id")
-    the_user = User.where({ :id => the_id }).at(0)
+  def feed
+    @the_username3 = params.fetch("username")
 
-    the_user.comments_count = params.fetch("query_comments_count")
-    the_user.email = params.fetch("query_email")
-    the_user.encrypted_password = params.fetch("query_encrypted_password")
-    the_user.likes_count = params.fetch("query_likes_count")
-    the_user.private = params.fetch("query_private", false)
-    the_user.remember_created_at = params.fetch("query_remember_created_at")
-    the_user.reset_password_sent_at = params.fetch("query_reset_password_sent_at")
-    the_user.reset_password_token = params.fetch("query_reset_password_token")
-    the_user.username = params.fetch("query_username")
-    the_user.own_photos_count = params.fetch("query_own_photos_count")
+    @user3 = User.find_by(username: params[:username])
 
-    if the_user.valid?
-      the_user.save
-      redirect_to("/users/#{the_user.id}", { :notice => "User updated successfully."} )
-    else
-      redirect_to("/users/#{the_user.id}", { :alert => the_user.errors.full_messages.to_sentence })
-    end
+    following_ids = FollowRequest.where(sender_id: @user3.id, status: "accepted").pluck(:recipient_id)
+
+    @list_of_photos3 = Photo.where(owner_id: following_ids).order(created_at: :desc)
+
+    render({ :template => "users/feed" })
+
+    #use params hash and then fetch. 
   end
 
-  def destroy
-    the_id = params.fetch("path_id")
-    the_user = User.where({ :id => the_id }).at(0)
 
-    the_user.destroy
+  def discover
+    @the_username4 = params.fetch("username")
 
-    redirect_to("/users", { :notice => "User deleted successfully."} )
+    @user4 = User.find_by(username: params[:username])
+
+    following_ids = FollowRequest.where(sender_id: @user4.id, status: "accepted").pluck(:recipient_id)
+    liked_photo_ids = Like.where(fan_id: following_ids).pluck(:photo_id)
+    @list_of_photos4 = Photo.where(id: liked_photo_ids).order(created_at: :desc)
+
+    render({ :template => "users/discover" })
+
   end
 end

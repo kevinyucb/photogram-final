@@ -5,23 +5,30 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
   </head>
 
-<body>
-    <nav>
-      <ul>
-        <li>
-          <a href="/users">All users</a>
-        </li>
-        <li>
-          <a href="/photos">All public photos</a>
-        </li>
-        <li>
-          <a href="/">Sign in or Username</a>
-        </li>
-        <li>
-          <a href="/">Sign up or Sign out</a>
-        </li>
-      </ul>
-    </nav>
+  <body>
+    <ul>
+      <li><a href="/users">All users</a></li>
+      <li><a href="/photos">All public photos</a></li>
+      <% if current_user!= nil %>
+        <li><a href="/users/edit"><%= current_user.username %></a></li>
+        <li><a href="/users/sign_out">Sign out</a></li>
+      <% else %>
+        <li><a href="/users/sign_in">Sign in</a></li>
+        <li><a href="/users/sign_up">Sign up</a></li>
+      <% end %>
+    </ul>
+
+    <% if notice %>
+      <div class="alert alert-notice">
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div class="alert alert-alert">
+        <%= alert %>
+      </div>
+    <% end %>
 
     <%= yield %>
   </body>

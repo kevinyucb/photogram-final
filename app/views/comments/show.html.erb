@@ -20,6 +20,13 @@
 
     <dl>
       <dt>
+        Author
+      </dt>
+      <dd>
+        <%= @the_comment.author_id %>
+      </dd>
+
+      <dt>
         Body
       </dt>
       <dd>
@@ -31,13 +38,6 @@
       </dt>
       <dd>
         <%= @the_comment.photo_id %>
-      </dd>
-
-      <dt>
-        Author
-      </dt>
-      <dd>
-        <%= @the_comment.author_id %>
       </dd>
 
       <dt>
@@ -68,6 +68,14 @@
 
     <form action="/modify_comment/<%= @the_comment.id %>"  method="post" >
       <div>
+        <label for="author_id_box">
+          Author
+        </label>
+
+        <input type="text" id="author_id_box" name="query_author_id" value="<%= @the_comment.author_id %>">
+      </div>
+
+      <div>
         <label for="body_box">
           Body
         </label>
@@ -81,14 +89,6 @@
         </label>
 
         <input type="text" id="photo_id_box" name="query_photo_id" value="<%= @the_comment.photo_id %>">
-      </div>
-
-      <div>
-        <label for="author_id_box">
-          Author
-        </label>
-
-        <input type="text" id="author_id_box" name="query_author_id" value="<%= @the_comment.author_id %>">
       </div>
 
       <button>

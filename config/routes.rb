@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
-  get("/", controller: "users", action: "index")
+  devise_for :users
+  # Routes for the User request resource:
+ 
+  # READ
+  get("/users", { :controller => "users", :action => "index" })
+  
+  get("/users/:username", { :controller => "users", :action => "show" })
+
+  get("/users/:username/liked_photos", { :controller => "users", :action => "liked_photos" })
+  
+  get("/users/:username/feed", { :controller => "users", :action => "feed" })
+
+  get("/users/:username/discover", { :controller => "users", :action => "discover" })
 
   # Routes for the Follow request resource:
 
@@ -17,25 +29,6 @@ Rails.application.routes.draw do
   
   # DELETE
   get("/delete_follow_request/:path_id", { :controller => "follow_requests", :action => "destroy" })
-
-  #------------------------------
-
-  # Routes for the Comment resource:
-
-  # CREATE
-  post("/insert_comment", { :controller => "comments", :action => "create" })
-          
-  # READ
-  get("/comments", { :controller => "comments", :action => "index" })
-  
-  get("/comments/:path_id", { :controller => "comments", :action => "show" })
-  
-  # UPDATE
-  
-  post("/modify_comment/:path_id", { :controller => "comments", :action => "update" })
-  
-  # DELETE
-  get("/delete_comment/:path_id", { :controller => "comments", :action => "destroy" })
 
   #------------------------------
 
@@ -58,22 +51,22 @@ Rails.application.routes.draw do
 
   #------------------------------
 
-  # Routes for the User resource:
+  # Routes for the Comment resource:
 
   # CREATE
-  post("/insert_user", { :controller => "users", :action => "create" })
+  post("/insert_comment", { :controller => "comments", :action => "create" })
           
   # READ
-  get("/users", { :controller => "users", :action => "index" })
+  get("/comments", { :controller => "comments", :action => "index" })
   
-  get("/users/:path_id", { :controller => "users", :action => "show" })
+  get("/comments/:path_id", { :controller => "comments", :action => "show" })
   
   # UPDATE
   
-  post("/modify_user/:path_id", { :controller => "users", :action => "update" })
+  post("/modify_comment/:path_id", { :controller => "comments", :action => "update" })
   
   # DELETE
-  get("/delete_user/:path_id", { :controller => "users", :action => "destroy" })
+  get("/delete_comment/:path_id", { :controller => "comments", :action => "destroy" })
 
   #------------------------------
 
@@ -100,24 +93,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  root to: "users#index"
 end
-
-#--REMOVED REMOVED REMOVED--#
-  # # Routes for the Followrequest resource:
-
-  # # CREATE
-  # post("/insert_followrequest", { :controller => "followrequests", :action => "create" })
-          
-  # # READ
-  # get("/followrequests", { :controller => "followrequests", :action => "index" })
-  
-  # get("/followrequests/:path_id", { :controller => "followrequests", :action => "show" })
-  
-  # # UPDATE
-  
-  # post("/modify_followrequest/:path_id", { :controller => "followrequests", :action => "update" })
-  
-  # # DELETE
-  # get("/delete_followrequest/:path_id", { :controller => "followrequests", :action => "destroy" })
-
-  # #------------------------------

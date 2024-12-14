@@ -16,6 +16,14 @@
 
     <form action="/insert_comment" method="post">
       <div>
+        <label for="author_id_box">
+          Author
+        </label>
+
+        <input type="text" id="author_id_box" name="query_author_id">
+      </div>
+
+      <div>
         <label for="body_box">
           Body
         </label>
@@ -29,14 +37,6 @@
         </label>
 
         <input type="text" id="photo_id_box" name="query_photo_id">
-      </div>
-
-      <div>
-        <label for="author_id_box">
-          Author
-        </label>
-
-        <input type="text" id="author_id_box" name="query_author_id">
       </div>
 
       <button>
@@ -56,15 +56,15 @@
         </th>
 
         <th>
+          Author
+        </th>
+
+        <th>
           Body
         </th>
 
         <th>
           Photo
-        </th>
-
-        <th>
-          Author
         </th>
 
         <th>
@@ -86,15 +86,15 @@
         </td>
 
         <td>
+          <%= a_comment.author_id %>
+        </td>
+
+        <td>
           <%= a_comment.body %>
         </td>
 
         <td>
           <%= a_comment.photo_id %>
-        </td>
-
-        <td>
-          <%= a_comment.author_id %>
         </td>
 
         <td>

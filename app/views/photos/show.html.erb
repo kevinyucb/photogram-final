@@ -1,24 +1,18 @@
+
 <div>
   <div>
     <h1>
-      Photo #<%= @the_photo.id %> details
+      Photo Details
     </h1>
 
-    <div>
-      <div>
-        <a href="/photos">
-          Go back
-        </a>
-      </div>
-
-      <div>
-        <a href="/delete_photo/<%= @the_photo.id %>">
-          Delete photo
-        </a>
-      </div>
-    </div>
-
     <dl>
+      <dt>
+        Image
+      </dt>
+      <dd>
+        <img src="<%= @the_photo.image %>" class="img-responsive">
+      </dd>
+
       <dt>
         Caption
       </dt>
@@ -27,17 +21,17 @@
       </dd>
 
       <dt>
-        Comments count
+        Owner
       </dt>
       <dd>
-        <%= @the_photo.comments_count %>
+        <%= @current_name %>
       </dd>
 
       <dt>
-        Image
+        Posted
       </dt>
       <dd>
-        <%= @the_photo.image %>
+        <%= time_ago_in_words(@the_photo.created_at) %> ago
       </dd>
 
       <dt>
@@ -48,37 +42,37 @@
       </dd>
 
       <dt>
-        Owner
+        Comments count
       </dt>
       <dd>
-        <%= @the_photo.owner_id %>
+        <%= @the_photo.comments_count %>
       </dd>
 
       <dt>
-        Created at
+        Add a fan
       </dt>
       <dd>
-        <%= time_ago_in_words(@the_photo.created_at) %> ago
-      </dd>
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_photo.updated_at) %> ago
+      <% current_like = Like.find_by(fan_id: current_user.id, photo_id: @the_photo.id) %>
+      <% if !current_like %>
+        <form action="/insert_like" method="post" class="form-horizontal" enctype="multipart/form-data">
+          <input type="hidden" id="fan_id_box" name="query_fan_id" value="<%= current_user.id %>">
+          <input type="hidden" id="photo_id_box" name="query_photo_id" value="<%= @the_photo.id %>">
+          <button>
+            Like
+          </button>
+        </form>
+      <% else %>
+        <%= link_to "Unlike", "/delete_like/#{current_like.id}", method: :get, data: { confirm: "Are you sure you want to unlike?" }, remote: true %>
+      <% end %>
       </dd>
     </dl>
   </div>
 </div>
 
-<hr>
-
-
 <div>
+  <% if current_user.username == @current_name %>
   <div>
-    <h2>
       Edit photo
-    </h2>
 
     <form action="/modify_photo/<%= @the_photo.id %>"  method="post" >
       <div>
@@ -126,6 +120,67 @@
       </button>
     </form>
   </div>
+  <% end %>
 </div>
 
-<hr>
+<div>
+  <% if current_user.username == @current_name %>
+  <a href="/delete_photo/<%= @the_photo.id %>">
+    Delete this photo
+  </a>
+  <% end %>
+</div>
+
+<h2>Comments</h2>
+
+<div>
+  <div>
+    <table border="1">
+      <tr>
+
+        <th>
+          Commenter
+        </th>
+
+        <th>
+          Comment
+        </th>
+
+        <th>
+          Posted
+        </th>
+
+      </tr>
+
+      <% @list_of_comments.each do |a_comment| %>
+        <tr>
+          <td>
+            <% current_commenter = a_comment.author_id %>
+            <%= User.find(current_commenter).username %>
+          </td>
+
+          <td>
+            <%= a_comment.body %>
+          </td>
+
+          <td>
+            <%= a_comment.created_at%>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<h3>Add a new comment</h3>
+
+<form action="/insert_comment" method="post">
+  <input type="hidden" id="photo_box" name="query_photo_id" value="<%= @the_photo.id %>">
+
+  <input type="hidden" id="author_box" name="query_author_id" value="<%= current_user.id %>">
+  
+  <label for="browser_comment">Comment</label>
+  <textarea id="browser_comment" name="query_body" placeholder="Enter a comment..."></textarea>
+
+  <button>Add comment</button>
+</form>
